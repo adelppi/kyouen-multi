@@ -29,6 +29,6 @@
 | [history.md](history.md) 操作の履歴 | 下書き | #14 |
 | [cursors.md](cursors.md) カーソルと軌跡 | 下書き | #15 |
 | [reset.md](reset.md) 盤面のリセット | 実装済み | #16 |
-| [board-size.md](board-size.md) 盤面のサイズの切り替え | 下書き | #17 |
+| [board-size.md](board-size.md) 盤面のサイズの切り替え | 合意 | #17 |
 | [kyouen-display.md](kyouen-display.md) 完成した円の表示 | 下書き | #18 |
 | [safe-points.md](safe-points.md) 石を置ける場所の表示 | 下書き | #19 |
