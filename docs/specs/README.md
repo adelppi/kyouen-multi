@@ -21,4 +21,4 @@
 
 | 仕様 | 状態 | Issue |
 |---|---|---|
-| まだない | | |
+| [kyouen-rules.md](kyouen-rules.md) 共円のルールと用語 | 合意 | #4 |
