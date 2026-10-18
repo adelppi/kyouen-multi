@@ -26,6 +26,9 @@ export function OtherCursors({ scale }: { scale: number }) {
   );
 }
 
+// 盤面の座標で見た、カーソルの矢印と名前の大きさの倍率
+const CURSOR_SIZE = 0.6;
+
 type Frame = { position: CursorPoint; trail: TrailPoint[]; now: number } | null;
 
 function Cursor({ color, name, scale, target }: { color: string; name: string; scale: number; target: CursorPoint | null }) {
@@ -83,7 +86,7 @@ function Cursor({ color, name, scale, target }: { color: string; name: string; s
           y2={point.y}
         />
       ))}
-      <g transform={`translate(${position.x} ${position.y}) scale(${scale})`}>
+      <g transform={`translate(${position.x} ${position.y}) scale(${scale * CURSOR_SIZE})`}>
         <path d="M0 0 L0 0.6 L0.16 0.45 L0.28 0.7 L0.37 0.66 L0.25 0.41 L0.45 0.41 Z" fill={color} stroke="white" strokeWidth={0.04} />
         <text fill={color} fontSize={0.32} fontWeight={500} paintOrder="stroke" stroke="white" strokeWidth={0.06} x={0.42} y={0.85}>
           {name}
