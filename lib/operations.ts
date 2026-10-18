@@ -1,4 +1,4 @@
-// 操作の記録と、記録から盤面を計算する処理（operation-log.md）
+// 操作の記録と、記録から盤面を計算する処理（operation-log.md、undo-redo.md）
 
 export const DEFAULT_BOARD_SIZE = 9;
 
@@ -11,7 +11,9 @@ export type Actor = {
 
 export type OperationBody =
   | { type: "place"; x: number; y: number }
-  | { type: "remove"; x: number; y: number };
+  | { type: "remove"; x: number; y: number }
+  | { type: "undo" }
+  | { type: "redo" };
 
 export type Operation = OperationBody & {
   by: Actor;
@@ -27,6 +29,17 @@ export type OperationResult = {
   operation: Operation;
   // 盤面を変えたかどうか。変えなかった操作は、何もしない操作として扱う
   effective: boolean;
+  // 記録の最後の時点で、undo で取り消されているかどうか
+  undone: boolean;
+  // undo と redo のとき、取り消した、またはやり直した操作の記録の位置
+  target?: number;
+};
+
+export type ReplayResult = {
+  board: Board;
+  results: OperationResult[];
+  canUndo: boolean;
+  canRedo: boolean;
 };
 
 export function pointKey(x: number, y: number): string {
@@ -42,29 +55,58 @@ function isOnBoard(size: number, x: number, y: number): boolean {
   return Number.isInteger(x) && Number.isInteger(y) && x >= 0 && y >= 0 && x < size && y < size;
 }
 
+// 盤面を変える操作を当てはめる。盤面が変わらないときは null を返す
+function apply(board: Board, operation: Operation): Board | null {
+  switch (operation.type) {
+    case "place":
+    case "remove": {
+      if (!isOnBoard(board.size, operation.x, operation.y)) return null;
+      const key = pointKey(operation.x, operation.y);
+      if (operation.type === "place" ? board.stones.has(key) : !board.stones.has(key)) return null;
+      const stones = new Set(board.stones);
+      if (operation.type === "place") stones.add(key);
+      else stones.delete(key);
+      return { size: board.size, stones };
+    }
+    default:
+      return null;
+  }
+}
+
+type Step = { index: number; before: Board; after: Board };
+
 // 記録を先頭から順に当てはめる。同じ記録からは、どのクライアントでも同じ盤面になる
-export function replay(operations: readonly Operation[]): {
-  board: Board;
-  results: OperationResult[];
-} {
-  const size = DEFAULT_BOARD_SIZE;
-  const stones = new Set<string>();
+export function replay(operations: readonly Operation[]): ReplayResult {
+  let board: Board = { size: DEFAULT_BOARD_SIZE, stones: new Set() };
+  // 取り消せる操作の列と、やり直せる操作の列（undo-redo.md）
+  const undoStack: Step[] = [];
+  let redoStack: Step[] = [];
   const results: OperationResult[] = [];
 
-  for (const operation of operations) {
-    let effective = false;
-    if (isOnBoard(size, operation.x, operation.y)) {
-      const key = pointKey(operation.x, operation.y);
-      if (operation.type === "place" && !stones.has(key)) {
-        stones.add(key);
-        effective = true;
-      } else if (operation.type === "remove" && stones.has(key)) {
-        stones.delete(key);
-        effective = true;
+  operations.forEach((operation, index) => {
+    const result: OperationResult = { operation, effective: false, undone: false };
+    if (operation.type === "undo" || operation.type === "redo") {
+      const from = operation.type === "undo" ? undoStack : redoStack;
+      const to = operation.type === "undo" ? redoStack : undoStack;
+      const step = from.pop();
+      if (step) {
+        board = operation.type === "undo" ? step.before : step.after;
+        to.push(step);
+        results[step.index].undone = operation.type === "undo";
+        result.effective = true;
+        result.target = step.index;
+      }
+    } else {
+      const after = apply(board, operation);
+      if (after) {
+        undoStack.push({ index, before: board, after });
+        redoStack = [];
+        board = after;
+        result.effective = true;
       }
     }
-    results.push({ operation, effective });
-  }
+    results.push(result);
+  });
 
-  return { board: { size, stones }, results };
+  return { board, results, canUndo: undoStack.length > 0, canRedo: redoStack.length > 0 };
 }

@@ -1,18 +1,22 @@
 "use client";
 
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Board } from "@/components/board";
+import { type Game, useGame } from "@/components/use-game";
 import { colorForConnection } from "@/lib/colors";
 
 export function RoomView() {
+  const game = useGame();
+
   return (
     <div className="flex flex-1 flex-col md:flex-row">
       <main className="flex flex-1 items-center justify-center p-4">
-        <Board />
+        <Board game={game} />
       </main>
       <aside className="flex flex-col gap-4 border-t border-zinc-200 p-4 md:w-64 md:border-t-0 md:border-l dark:border-zinc-800">
         <CopyLinkButton />
+        <UndoRedo game={game} />
         <ParticipantList />
       </aside>
     </div>
@@ -48,12 +52,43 @@ function ParticipantList() {
   );
 }
 
+const buttonClass =
+  "rounded-md border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent dark:border-zinc-700 dark:hover:bg-zinc-900";
+
+function UndoRedo({ game }: { game: Game }) {
+  const { canUndo, canRedo, record } = game;
+
+  // Ctrl+Z で undo、Ctrl+Shift+Z で redo。Mac では Ctrl の代わりに Cmd
+  useEffect(() => {
+    const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+    function onKeyDown(event: KeyboardEvent) {
+      if ((isMac ? !event.metaKey : !event.ctrlKey) || event.altKey || event.key.toLowerCase() !== "z") return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, textarea, [contenteditable]")) return;
+      event.preventDefault();
+      record({ type: event.shiftKey ? "redo" : "undo" });
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [record]);
+
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      <button className={buttonClass} disabled={!canUndo} onClick={() => record({ type: "undo" })} type="button">
+        元に戻す
+      </button>
+      <button className={buttonClass} disabled={!canRedo} onClick={() => record({ type: "redo" })} type="button">
+        やり直す
+      </button>
+    </div>
+  );
+}
+
 function CopyLinkButton() {
   const [copied, setCopied] = useState(false);
 
   return (
     <button
-      className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-900"
+      className={buttonClass}
       onClick={async () => {
         await navigator.clipboard.writeText(window.location.href);
         setCopied(true);

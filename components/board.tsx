@@ -1,31 +1,15 @@
 "use client";
 
-import { useMutation, useSelf, useStorage } from "@liveblocks/react/suspense";
 import { useMemo } from "react";
-import { colorForConnection } from "@/lib/colors";
-import { getUserId } from "@/lib/local-identity";
-import { type OperationBody, parsePointKey, pointKey, replay } from "@/lib/operations";
+import type { Game } from "@/components/use-game";
+import { parsePointKey, pointKey } from "@/lib/operations";
 
 // 盤面のまわりの余白（格子の間隔を1とする）
 const MARGIN = 0.7;
 const STONE_RADIUS = 0.38;
 
-export function Board() {
-  const operations = useStorage((root) => root.operations);
-  const { board } = useMemo(() => replay(operations), [operations]);
-  const self = useSelf((me) => ({ connectionId: me.connectionId, name: me.presence.name }));
-
-  const record = useMutation(
-    ({ storage }, body: OperationBody) => {
-      storage.get("operations").push({
-        ...body,
-        by: { userId: getUserId(), name: self.name, color: colorForConnection(self.connectionId) },
-        at: Date.now(),
-      });
-    },
-    [self.name, self.connectionId],
-  );
-
+export function Board({ game }: { game: Game }) {
+  const { board, record } = game;
   const { size, stones } = board;
   const last = size - 1;
   const points = useMemo(
