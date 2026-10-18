@@ -5,6 +5,7 @@ import { ClientSideSuspense, LiveblocksProvider, RoomProvider } from "@liveblock
 import { useState } from "react";
 import { JoinForm } from "@/components/join-form";
 import { RoomView } from "@/components/room-view";
+import { CURSOR_THROTTLE_MS } from "@/lib/cursor";
 import { getUserId } from "@/lib/local-identity";
 
 async function authenticate(room?: string) {
@@ -22,10 +23,10 @@ export function RoomClient({ roomId }: { roomId: string }) {
   if (name === null) return <JoinForm onJoin={setName} />;
 
   return (
-    <LiveblocksProvider authEndpoint={authenticate}>
+    <LiveblocksProvider authEndpoint={authenticate} throttle={CURSOR_THROTTLE_MS}>
       <RoomProvider
         id={roomId}
-        initialPresence={{ name }}
+        initialPresence={{ name, cursor: null }}
         initialStorage={() => ({ operations: new LiveList([]) })}
       >
         <ClientSideSuspense fallback={<Centered>接続しています…</Centered>}>

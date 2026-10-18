@@ -1,18 +1,22 @@
 "use client";
 
-import { useMemo } from "react";
+import { useUpdateMyPresence } from "@liveblocks/react/suspense";
+import { type PointerEvent, useMemo } from "react";
+import { OtherCursors } from "@/components/cursors";
 import type { Point } from "@/components/history";
 import type { Game } from "@/components/use-game";
 import { parsePointKey, pointKey } from "@/lib/operations";
 
 // 盤面のまわりの余白（格子の間隔を1とする）
 const MARGIN = 0.7;
+const VIEW_OF_DEFAULT_BOARD = 8 + MARGIN * 2;
 const STONE_RADIUS = 0.38;
 
 export function Board({ game, highlight }: { game: Game; highlight: Point | null }) {
   const { board, record } = game;
   const { size, stones } = board;
   const last = size - 1;
+  const updateMyPresence = useUpdateMyPresence();
   const points = useMemo(
     () => Array.from({ length: size * size }, (_, i) => ({ x: i % size, y: Math.floor(i / size) })),
     [size],
@@ -23,6 +27,8 @@ export function Board({ game, highlight }: { game: Game; highlight: Point | null
       aria-label={`${size}×${size} の盤面`}
       className="aspect-square w-full max-w-[min(100%,80vh)] touch-manipulation select-none"
       role="img"
+      onPointerLeave={() => updateMyPresence({ cursor: null })}
+      onPointerMove={(event) => updateMyPresence({ cursor: toBoardPoint(event) })}
       viewBox={`${-MARGIN} ${-MARGIN} ${last + MARGIN * 2} ${last + MARGIN * 2}`}
     >
       <rect
@@ -73,6 +79,16 @@ export function Board({ game, highlight }: { game: Game; highlight: Point | null
           />
         );
       })}
+      <OtherCursors scale={(last + MARGIN * 2) / VIEW_OF_DEFAULT_BOARD} />
     </svg>
   );
+}
+
+// カーソルの位置を、画面の座標から盤面の座標に直す。タッチ操作の位置は共有しない（cursors.md）
+function toBoardPoint(event: PointerEvent<SVGSVGElement>): { x: number; y: number } | null {
+  if (event.pointerType !== "mouse") return null;
+  const matrix = event.currentTarget.getScreenCTM();
+  if (!matrix) return null;
+  const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
+  return { x: point.x, y: point.y };
 }
