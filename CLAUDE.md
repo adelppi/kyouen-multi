@@ -11,6 +11,11 @@
 - 決めたことは `docs/decisions/` に追記する。既存の記録は消さず、本文も書き換えない。
 - `docs/vision.md` の「やらないこと」に当たる機能は作らない。
 
+## コードを書くとき
+
+- Next.js のコードを書く前に `AGENTS.md` を読む。手元の Next.js は学習した版と違うことがあるので、`node_modules/next/dist/docs/` の説明で確かめる。
+- コマンドは pnpm で実行する。`pnpm lint` と `pnpm test` が通ってから PR を出す。
+
 ## 日本語の文体（yomiyasu）
 
 このリポジトリで Claude が書く日本語は、すべて `.claude/skills/yomiyasu/SKILL.md` の規則に従う。対象は次のとおり。
