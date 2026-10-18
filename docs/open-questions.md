@@ -157,3 +157,12 @@
 - 影響: `specs/board-size.md`
 - 選択肢: 部屋を作ったときのサイズは 9×9 と決まっている（D-0005）
 - 決定: [D-0009](decisions/D-0009-selectable-board-sizes.md)
+
+### OQ-016
+
+- 問い: すでにできている共円（4つ以上の石が通る円や直線）の上の格子点を、石を置ける場所にするか。
+- 状態: 解決
+- 起票: 2026-10-19、Issue #19
+- 影響: `specs/safe-points.md`
+- 選択肢: 置けない場所にする（推奨）／置ける場所にする
+- 決定: [D-0010](decisions/D-0010-safe-points-on-existing-kyouen.md)
