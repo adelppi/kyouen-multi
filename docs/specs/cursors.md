@@ -1,6 +1,6 @@
 # カーソル
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #6（仕様）、#15（実装）、#35（軌跡をなくし、カーソルを小さくした）
 - 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0011](../decisions/D-0011-no-cursor-trail.md)
 
