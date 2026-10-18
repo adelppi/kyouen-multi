@@ -25,7 +25,7 @@
 | [operation-log.md](operation-log.md) 操作の記録と同期 | 合意 | #12 |
 | [room.md](room.md) 部屋と参加 | 実装済み | #11 |
 | [board.md](board.md) 盤面と石の操作 | 合意 | #12 |
-| [undo-redo.md](undo-redo.md) 全体の undo と redo | 下書き | #13 |
+| [undo-redo.md](undo-redo.md) 全体の undo と redo | 合意 | #13 |
 | [history.md](history.md) 操作の履歴 | 下書き | #14 |
 | [cursors.md](cursors.md) カーソルと軌跡 | 下書き | #15 |
 | [reset.md](reset.md) 盤面のリセット | 下書き | #16 |
