@@ -123,3 +123,25 @@ describe("undo と redo", () => {
     expect(replay([place(1, 1), undo()])).toMatchObject({ canUndo: false, canRedo: true });
   });
 });
+
+describe("リセット", () => {
+  const place = (x: number, y: number) => op({ type: "place", x, y });
+
+  it("石をすべて取り除き、サイズは変えない", () => {
+    const { board, results } = replay([place(1, 1), place(2, 2), op({ type: "reset" }, bob)]);
+    expect(board.stones.size).toBe(0);
+    expect(board.size).toBe(DEFAULT_BOARD_SIZE);
+    expect(results[2].effective).toBe(true);
+  });
+
+  it("リセットのあとに undo すると、リセットの前の盤面に戻る", () => {
+    const { board } = replay([place(1, 1), place(2, 2), op({ type: "reset" }), op({ type: "undo" })]);
+    expect([...board.stones].sort()).toEqual([pointKey(1, 1), pointKey(2, 2)]);
+  });
+
+  it("石がないときのリセットは何もしない", () => {
+    const { results, canUndo } = replay([op({ type: "reset" })]);
+    expect(results[0].effective).toBe(false);
+    expect(canUndo).toBe(false);
+  });
+});

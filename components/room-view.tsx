@@ -17,6 +17,9 @@ export function RoomView() {
       <aside className="flex flex-col gap-4 border-t border-zinc-200 p-4 md:w-64 md:border-t-0 md:border-l dark:border-zinc-800">
         <CopyLinkButton />
         <UndoRedo game={game} />
+        <button className={buttonClass} onClick={() => game.record({ type: "reset" })} type="button">
+          リセット
+        </button>
         <ParticipantList />
       </aside>
     </div>
