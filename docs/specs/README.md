@@ -31,4 +31,4 @@
 | [reset.md](reset.md) 盤面のリセット | 実装済み | #16 |
 | [board-size.md](board-size.md) 盤面のサイズの切り替え | 実装済み | #17 |
 | [kyouen-display.md](kyouen-display.md) 完成した円の表示 | 実装済み | #18 |
-| [safe-points.md](safe-points.md) 石を置ける場所の表示 | 下書き | #19 |
+| [safe-points.md](safe-points.md) 石を置ける場所の表示 | 合意 | #19 |
