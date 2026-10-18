@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { circleOf, clipLine, curveThrough, findKyouen, isOnCurve } from "./kyouen";
+import { circleOf, clipLine, curveThrough, findKyouen, findSafePoints, isOnCurve } from "./kyouen";
 import { pointKey } from "./operations";
 
 const keys = (...points: [number, number][]) => points.map(([x, y]) => pointKey(x, y));
@@ -78,5 +78,46 @@ describe("clipLine", () => {
     expect(clipLine(vertical, 0, 8)!.map((e) => e.x)).toEqual([3, 3]);
     const horizontal = curveThrough({ x: 0, y: 2 }, { x: 1, y: 2 }, { x: 5, y: 2 })!;
     expect(clipLine(horizontal, 0, 8)!.map((e) => e.y)).toEqual([2, 2]);
+  });
+});
+
+describe("findSafePoints", () => {
+  const has = (points: { x: number; y: number }[], x: number, y: number) => points.some((p) => p.x === x && p.y === y);
+
+  it("石が2つ以下なら、石のない格子点はすべて置ける", () => {
+    const stones = new Set(keys([0, 0], [1, 1]));
+    expect(findSafePoints(5, stones)).toHaveLength(25 - 2);
+  });
+
+  it("置くと共円ができる格子点は置けない", () => {
+    // (1,1)、(3,1)、(3,4) に置くと、(1,4) で長方形の共円になる。(0,0)、(1,0)、(2,0) の直線の上も置けない
+    const safe = findSafePoints(9, new Set(keys([1, 1], [3, 1], [3, 4])));
+    expect(has(safe, 1, 4)).toBe(false);
+    const line = findSafePoints(9, new Set(keys([0, 0], [1, 0], [2, 0])));
+    expect(has(line, 5, 0)).toBe(false);
+    expect(has(line, 5, 1)).toBe(true);
+  });
+
+  it("すでにできている共円の上の格子点も置けない", () => {
+    const safe = findSafePoints(9, new Set(keys([0, 0], [1, 0], [2, 0], [3, 0])));
+    expect(has(safe, 4, 0)).toBe(false);
+  });
+
+  it("石のある格子点は返さない", () => {
+    const safe = findSafePoints(5, new Set(keys([2, 2])));
+    expect(has(safe, 2, 2)).toBe(false);
+  });
+
+  it("置ける場所に置いても共円はできず、ほかの石のない格子点に置くと共円ができる", () => {
+    const stones = new Set(keys([1, 1], [3, 1], [3, 4], [6, 2], [0, 7]));
+    expect(findKyouen(stones)).toEqual([]);
+    const safe = findSafePoints(9, stones);
+    for (let y = 0; y < 9; y++) {
+      for (let x = 0; x < 9; x++) {
+        if (stones.has(pointKey(x, y))) continue;
+        const kyouen = findKyouen([...stones, pointKey(x, y)]);
+        expect(kyouen.length === 0).toBe(has(safe, x, y));
+      }
+    }
   });
 });

@@ -1,6 +1,6 @@
 // 共円の判定（kyouen-rules.md の「判定の方法」）。格子点の座標は整数なので、整数だけで計算する
 
-import { parsePointKey } from "./operations";
+import { parsePointKey, pointKey } from "./operations";
 
 export type Point = { x: number; y: number };
 
@@ -97,4 +97,17 @@ export function clipLine({ b, c, d }: Curve, min: number, max: number): [Point, 
     add(-(c * max + d) / b, max);
   }
   return ends.length >= 2 ? [ends[0], ends[1]] : null;
+}
+
+// 石を置ける場所。石のない格子点のうち、3つ以上の石を通る円と直線のどれの上にもないもの（safe-points.md）
+export function findSafePoints(size: number, stones: ReadonlySet<string>): Point[] {
+  const curves = curvesThroughStones(stones, 3).map(({ curve }) => curve);
+  const safe: Point[] = [];
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if (stones.has(pointKey(x, y))) continue;
+      if (!curves.some((curve) => isOnCurve(curve, { x, y }))) safe.push({ x, y });
+    }
+  }
+  return safe;
 }

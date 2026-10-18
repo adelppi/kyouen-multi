@@ -13,11 +13,12 @@ export function RoomView() {
   const [highlight, setHighlight] = useState<Point | null>(null);
   // 表示の切り替えは参加者ごと（D-0007）
   const [showKyouen, setShowKyouen] = useState(false);
+  const [showSafePoints, setShowSafePoints] = useState(false);
 
   return (
     <div className="flex flex-1 flex-col md:flex-row">
       <main className="flex flex-1 items-center justify-center p-4">
-        <Board game={game} highlight={highlight} showKyouen={showKyouen} />
+        <Board game={game} highlight={highlight} showKyouen={showKyouen} showSafePoints={showSafePoints} />
       </main>
       <aside className="flex flex-col gap-4 border-t border-zinc-200 p-4 md:w-64 md:border-t-0 md:border-l dark:border-zinc-800">
         <CopyLinkButton />
@@ -27,6 +28,7 @@ export function RoomView() {
         </button>
         <BoardSizeSelect game={game} />
         <Toggle checked={showKyouen} label="完成した円を表示" onChange={setShowKyouen} />
+        <Toggle checked={showSafePoints} label="石を置ける場所を表示" onChange={setShowSafePoints} />
         <ParticipantList />
         <History game={game} onHighlight={setHighlight} />
       </aside>

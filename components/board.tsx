@@ -5,7 +5,7 @@ import { type PointerEvent, useMemo } from "react";
 import { OtherCursors } from "@/components/cursors";
 import type { Point } from "@/components/history";
 import type { Game } from "@/components/use-game";
-import { circleOf, clipLine, findKyouen } from "@/lib/kyouen";
+import { circleOf, clipLine, findKyouen, findSafePoints } from "@/lib/kyouen";
 import { parsePointKey, pointKey } from "@/lib/operations";
 
 // 盤面のまわりの余白（格子の間隔を1とする）
@@ -17,16 +17,19 @@ export function Board({
   game,
   highlight,
   showKyouen,
+  showSafePoints,
 }: {
   game: Game;
   highlight: Point | null;
   showKyouen: boolean;
+  showSafePoints: boolean;
 }) {
   const { board, record } = game;
   const { size, stones } = board;
   const last = size - 1;
   const updateMyPresence = useUpdateMyPresence();
   const kyouen = useMemo(() => (showKyouen ? findKyouen(stones) : []), [showKyouen, stones]);
+  const safePoints = useMemo(() => (showSafePoints ? findSafePoints(size, stones) : []), [showSafePoints, size, stones]);
   const points = useMemo(
     () => Array.from({ length: size * size }, (_, i) => ({ x: i % size, y: Math.floor(i / size) })),
     [size],
@@ -66,6 +69,11 @@ export function Board({
           if (!ends) return null;
           return <line key={key} x1={ends[0].x} x2={ends[1].x} y1={ends[0].y} y2={ends[1].y} />;
         })}
+      </g>
+      <g className="fill-emerald-500/60">
+        {safePoints.map(({ x, y }) => (
+          <circle key={pointKey(x, y)} cx={x} cy={y} r={0.12} />
+        ))}
       </g>
       {[...stones].map((key) => {
         const { x, y } = parsePointKey(key);
