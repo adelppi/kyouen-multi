@@ -2,7 +2,7 @@
 
 - 状態: 下書き
 - Issue: #6（仕様）、#12（実装）
-- 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)
+- 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
 
 ## 目的
 
@@ -28,7 +28,7 @@
 7. 記録から外したり、記録の中を書き換えたりしない。
 8. 部屋を作ったときの盤面は、石がなく、サイズが 9×9 の盤面とする。
 9. サイズ変更の操作は、盤面のサイズを変え、置いてある石をすべて取り除く。
-10. 部屋の参加者が全員抜けたら、記録を消す（[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)）。
+10. 部屋の参加者が全員抜けたら、5分待ってから記録を消す（[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)）。
 
 ## 受け入れ条件
 
