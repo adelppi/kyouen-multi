@@ -22,3 +22,13 @@
 | 仕様 | 状態 | Issue |
 |---|---|---|
 | [kyouen-rules.md](kyouen-rules.md) 共円のルールと用語 | 合意 | #4 |
+| [operation-log.md](operation-log.md) 操作の記録と同期 | 下書き | #12 |
+| [room.md](room.md) 部屋と参加 | 下書き | #11 |
+| [board.md](board.md) 盤面と石の操作 | 下書き | #12 |
+| [undo-redo.md](undo-redo.md) 全体の undo と redo | 下書き | #13 |
+| [history.md](history.md) 操作の履歴 | 下書き | #14 |
+| [cursors.md](cursors.md) カーソルと軌跡 | 下書き | #15 |
+| [reset.md](reset.md) 盤面のリセット | 下書き | #16 |
+| [board-size.md](board-size.md) 盤面のサイズの切り替え | 下書き | #17 |
+| [kyouen-display.md](kyouen-display.md) 完成した円の表示 | 下書き | #18 |
+| [safe-points.md](safe-points.md) 石を置ける場所の表示 | 下書き | #19 |
