@@ -1,6 +1,6 @@
 # 操作の履歴
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #6（仕様）、#14（実装）
 - 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
 
