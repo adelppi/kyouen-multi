@@ -1,6 +1,6 @@
 # 全体の undo と redo
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #6（仕様）、#13（実装）
 - 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)
 
