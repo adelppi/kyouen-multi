@@ -27,7 +27,7 @@
 | [board.md](board.md) 盤面と石の操作 | 合意 | #12 |
 | [undo-redo.md](undo-redo.md) 全体の undo と redo | 実装済み | #13 |
 | [history.md](history.md) 操作の履歴 | 実装済み | #14 |
-| [cursors.md](cursors.md) カーソルと軌跡 | 下書き | #15 |
+| [cursors.md](cursors.md) カーソルと軌跡 | 合意 | #15 |
 | [reset.md](reset.md) 盤面のリセット | 実装済み | #16 |
 | [board-size.md](board-size.md) 盤面のサイズの切り替え | 実装済み | #17 |
 | [kyouen-display.md](kyouen-display.md) 完成した円の表示 | 下書き | #18 |

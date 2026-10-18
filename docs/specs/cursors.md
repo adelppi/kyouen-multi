@@ -1,6 +1,6 @@
 # カーソルと軌跡
 
-- 状態: 下書き
+- 状態: 合意
 - Issue: #6（仕様）、#15（実装）
 - 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
 
