@@ -1,4 +1,4 @@
-// 操作の記録と、記録から盤面を計算する処理（operation-log.md、undo-redo.md）
+// 操作の記録と、記録から盤面を計算する処理（operation-log.md、undo-redo.md、reset.md）
 
 export const DEFAULT_BOARD_SIZE = 9;
 
@@ -12,6 +12,7 @@ export type Actor = {
 export type OperationBody =
   | { type: "place"; x: number; y: number }
   | { type: "remove"; x: number; y: number }
+  | { type: "reset" }
   | { type: "undo" }
   | { type: "redo" };
 
@@ -68,6 +69,9 @@ function apply(board: Board, operation: Operation): Board | null {
       else stones.delete(key);
       return { size: board.size, stones };
     }
+    case "reset":
+      // 石を取り除き、サイズは変えない（reset.md）
+      return board.stones.size > 0 ? { size: board.size, stones: new Set() } : null;
     default:
       return null;
   }
