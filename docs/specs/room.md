@@ -1,8 +1,8 @@
 # 部屋と参加
 
-- 状態: 下書き
+- 状態: 合意
 - Issue: #6（仕様）、#11（実装）
-- 関係する決定: [D-0003](../decisions/D-0003-room-and-participants.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
+- 関係する決定: [D-0003](../decisions/D-0003-room-and-participants.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0008](../decisions/D-0008-room-implementation.md)
 
 ## 目的
 
@@ -17,6 +17,8 @@
 5. 部屋にいる参加者の名前と色を、画面に一覧で表示する。参加者が入ったり出たりしたら、一覧をすぐに更新する。
 6. 部屋の URL をコピーする操作を画面に置く。
 7. 部屋の参加者が全員抜けたら、5分待ってから部屋と操作の記録を消す。5分のうちに誰かが入れば消さない。消したあとで同じ URL を開いた人は、新しい部屋に入る（[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)）。
+
+8. 部屋を消すのは、次に誰かが部屋に入るときか、毎日1回の定期処理のときにする。参加者から見た振る舞いは 7 のとおりになる（[D-0008](../decisions/D-0008-room-implementation.md)）。
 
 ## 受け入れ条件
 
