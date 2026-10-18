@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { Point } from "@/components/history";
 import type { Game } from "@/components/use-game";
 import { parsePointKey, pointKey } from "@/lib/operations";
 
@@ -8,7 +9,7 @@ import { parsePointKey, pointKey } from "@/lib/operations";
 const MARGIN = 0.7;
 const STONE_RADIUS = 0.38;
 
-export function Board({ game }: { game: Game }) {
+export function Board({ game, highlight }: { game: Game; highlight: Point | null }) {
   const { board, record } = game;
   const { size, stones } = board;
   const last = size - 1;
@@ -44,6 +45,15 @@ export function Board({ game }: { game: Game }) {
         const { x, y } = parsePointKey(key);
         return <circle key={key} className="fill-zinc-900 dark:fill-zinc-100" cx={x} cy={y} r={STONE_RADIUS} />;
       })}
+      {highlight && highlight.x >= 0 && highlight.y >= 0 && highlight.x < size && highlight.y < size && (
+        <circle
+          className="pointer-events-none fill-none stroke-sky-500"
+          cx={highlight.x}
+          cy={highlight.y}
+          r={0.48}
+          strokeWidth={0.08}
+        />
+      )}
       {points.map(({ x, y }) => {
         const hasStone = stones.has(pointKey(x, y));
         return (

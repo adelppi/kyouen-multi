@@ -3,17 +3,19 @@
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
 import { useEffect, useState } from "react";
 import { Board } from "@/components/board";
+import { History, type Point } from "@/components/history";
 import { type Game, useGame } from "@/components/use-game";
 import { colorForConnection } from "@/lib/colors";
 import { MAX_BOARD_SIZE, MIN_BOARD_SIZE } from "@/lib/operations";
 
 export function RoomView() {
   const game = useGame();
+  const [highlight, setHighlight] = useState<Point | null>(null);
 
   return (
     <div className="flex flex-1 flex-col md:flex-row">
       <main className="flex flex-1 items-center justify-center p-4">
-        <Board game={game} />
+        <Board game={game} highlight={highlight} />
       </main>
       <aside className="flex flex-col gap-4 border-t border-zinc-200 p-4 md:w-64 md:border-t-0 md:border-l dark:border-zinc-800">
         <CopyLinkButton />
@@ -23,6 +25,7 @@ export function RoomView() {
         </button>
         <BoardSizeSelect game={game} />
         <ParticipantList />
+        <History game={game} onHighlight={setHighlight} />
       </aside>
     </div>
   );
