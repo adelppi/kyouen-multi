@@ -10,9 +10,13 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@liveblocks/client": "^3.24.3",
+    "@liveblocks/node": "^3.24.3",
+    "@liveblocks/react": "^3.24.3",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

@@ -4,7 +4,10 @@
 
 ## 開発
 
+`.env.example` を `.env.local` に写し、値を入れる。
+
 ```bash
+cp .env.example .env.local
 pnpm install
 pnpm dev    # http://localhost:3000 で開く
 pnpm lint

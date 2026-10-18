@@ -23,7 +23,7 @@
 |---|---|---|
 | [kyouen-rules.md](kyouen-rules.md) 共円のルールと用語 | 合意 | #4 |
 | [operation-log.md](operation-log.md) 操作の記録と同期 | 下書き | #12 |
-| [room.md](room.md) 部屋と参加 | 下書き | #11 |
+| [room.md](room.md) 部屋と参加 | 実装済み | #11 |
 | [board.md](board.md) 盤面と石の操作 | 下書き | #12 |
 | [undo-redo.md](undo-redo.md) 全体の undo と redo | 下書き | #13 |
 | [history.md](history.md) 操作の履歴 | 下書き | #14 |
