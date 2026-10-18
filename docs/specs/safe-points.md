@@ -1,8 +1,8 @@
 # 石を置ける場所の表示
 
-- 状態: 実装済み
-- Issue: #6（仕様）、#19（実装）
-- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)
+- 状態: 合意
+- Issue: #6（仕様）、#19（実装）、#37（プレースホルダーにした）
+- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)、[D-0012](../decisions/D-0012-kyouen-placeholder.md)
 
 ## 目的
 
@@ -15,6 +15,7 @@
    すでにできている共円の上の格子点も、置けない場所とする。つまり、3つ以上の石を通る円か直線の上にある格子点は、どれも置ける場所にしない（[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)）。
 3. 表示にしているときは、石を置ける場所に印を描く。
 4. 盤面が変わったら、石を置ける場所を計算し直す。
+5. いまの計算の処理は、空の結果を返すプレースホルダーで、ほかの開発メンバーが作る（[D-0012](../decisions/D-0012-kyouen-placeholder.md)）。
 
 ## 受け入れ条件
 

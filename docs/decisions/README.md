@@ -30,3 +30,4 @@
 | [D-0009](D-0009-selectable-board-sizes.md) | 選べる盤面のサイズ | 2026-10-19 |
 | [D-0010](D-0010-safe-points-on-existing-kyouen.md) | できている共円の上の格子点の扱い | 2026-10-19 |
 | [D-0011](D-0011-no-cursor-trail.md) | カーソルの軌跡を表示しない | 2026-10-19 |
+| [D-0012](D-0012-kyouen-placeholder.md) | 円の判定と置ける場所の計算をプレースホルダーにする | 2026-10-19 |
