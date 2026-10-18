@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Board } from "@/components/board";
 import { type Game, useGame } from "@/components/use-game";
 import { colorForConnection } from "@/lib/colors";
+import { MAX_BOARD_SIZE, MIN_BOARD_SIZE } from "@/lib/operations";
 
 export function RoomView() {
   const game = useGame();
@@ -20,6 +21,7 @@ export function RoomView() {
         <button className={buttonClass} onClick={() => game.record({ type: "reset" })} type="button">
           リセット
         </button>
+        <BoardSizeSelect game={game} />
         <ParticipantList />
       </aside>
     </div>
@@ -83,6 +85,29 @@ function UndoRedo({ game }: { game: Game }) {
         やり直す
       </button>
     </div>
+  );
+}
+
+const BOARD_SIZES = Array.from({ length: MAX_BOARD_SIZE - MIN_BOARD_SIZE + 1 }, (_, i) => MIN_BOARD_SIZE + i);
+
+function BoardSizeSelect({ game }: { game: Game }) {
+  const { board, record } = game;
+
+  return (
+    <label className="flex items-center justify-between gap-2 text-sm">
+      盤面のサイズ
+      <select
+        className="rounded-md border border-zinc-300 bg-transparent px-2 py-1 dark:border-zinc-700"
+        onChange={(event) => record({ type: "resize", size: Number(event.target.value) })}
+        value={board.size}
+      >
+        {BOARD_SIZES.map((size) => (
+          <option key={size} value={size}>
+            {size}×{size}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 

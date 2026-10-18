@@ -1,6 +1,10 @@
-// 操作の記録と、記録から盤面を計算する処理（operation-log.md、undo-redo.md、reset.md）
+// 操作の記録と、記録から盤面を計算する処理（operation-log.md、undo-redo.md、reset.md、board-size.md）
 
 export const DEFAULT_BOARD_SIZE = 9;
+
+// 選べる盤面のサイズ（D-0009）
+export const MIN_BOARD_SIZE = 5;
+export const MAX_BOARD_SIZE = 20;
 
 // 操作したときの参加者。名前と色は操作したときの値を残す
 export type Actor = {
@@ -13,6 +17,7 @@ export type OperationBody =
   | { type: "place"; x: number; y: number }
   | { type: "remove"; x: number; y: number }
   | { type: "reset" }
+  | { type: "resize"; size: number }
   | { type: "undo" }
   | { type: "redo" };
 
@@ -72,6 +77,13 @@ function apply(board: Board, operation: Operation): Board | null {
     case "reset":
       // 石を取り除き、サイズは変えない（reset.md）
       return board.stones.size > 0 ? { size: board.size, stones: new Set() } : null;
+    case "resize": {
+      const { size } = operation;
+      if (!Number.isInteger(size) || size < MIN_BOARD_SIZE || size > MAX_BOARD_SIZE) return null;
+      // サイズを変えたら、置いてある石をすべて取り除く（D-0005）
+      if (size === board.size && board.stones.size === 0) return null;
+      return { size, stones: new Set() };
+    }
     default:
       return null;
   }
