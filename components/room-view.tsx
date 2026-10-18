@@ -2,13 +2,14 @@
 
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
 import { useState } from "react";
+import { Board } from "@/components/board";
 import { colorForConnection } from "@/lib/colors";
 
 export function RoomView() {
   return (
     <div className="flex flex-1 flex-col md:flex-row">
-      <main className="flex flex-1 items-center justify-center p-6 text-sm text-zinc-500">
-        盤面はここに表示します
+      <main className="flex flex-1 items-center justify-center p-4">
+        <Board />
       </main>
       <aside className="flex flex-col gap-4 border-t border-zinc-200 p-4 md:w-64 md:border-t-0 md:border-l dark:border-zinc-800">
         <CopyLinkButton />
