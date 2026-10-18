@@ -1,6 +1,6 @@
 # 完成した円の表示
 
-- 状態: 下書き
+- 状態: 合意
 - Issue: #6（仕様）、#18（実装）
 - 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
 
