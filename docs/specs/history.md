@@ -2,7 +2,7 @@
 
 - 状態: 下書き
 - Issue: #6（仕様）、#14（実装）
-- 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)
+- 関係する決定: [D-0004](../decisions/D-0004-tech-stack.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)
 
 ## 目的
 
@@ -27,4 +27,4 @@
 
 ## 未解決の項目
 
-- [OQ-009](../open-questions.md#oq-009) 盤面の上で、石ごとに置いた参加者を見分けられるようにするか
+- なし
