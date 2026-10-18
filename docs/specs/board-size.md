@@ -1,6 +1,6 @@
 # 盤面のサイズの切り替え
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #6（仕様）、#17（実装）
 - 関係する決定: [D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0009](../decisions/D-0009-selectable-board-sizes.md)
 
