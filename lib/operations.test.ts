@@ -145,3 +145,43 @@ describe("リセット", () => {
     expect(canUndo).toBe(false);
   });
 });
+
+describe("サイズ変更", () => {
+  const place = (x: number, y: number) => op({ type: "place", x, y });
+  const resize = (size: number) => op({ type: "resize", size });
+
+  it("サイズを変え、置いてある石をすべて取り除く", () => {
+    const { board } = replay([place(1, 1), resize(13)]);
+    expect(board.size).toBe(13);
+    expect(board.stones.size).toBe(0);
+  });
+
+  it("変えたあとのサイズで、盤面の外の格子点が決まる", () => {
+    const { board, results } = replay([resize(5), place(5, 0), place(4, 4)]);
+    expect(results.map((r) => r.effective)).toEqual([true, false, true]);
+    expect([...board.stones]).toEqual([pointKey(4, 4)]);
+  });
+
+  it("サイズ変更のあとに undo すると、変える前のサイズと石に戻る", () => {
+    const { board } = replay([place(1, 1), resize(20), op({ type: "undo" })]);
+    expect(board.size).toBe(DEFAULT_BOARD_SIZE);
+    expect([...board.stones]).toEqual([pointKey(1, 1)]);
+  });
+
+  it("5×5 から 20×20 までを選べ、その外のサイズは何もしない", () => {
+    expect(replay([resize(5)]).board.size).toBe(5);
+    expect(replay([resize(20)]).board.size).toBe(20);
+    for (const size of [4, 21, 0, -9, 9.5]) {
+      const { board, results } = replay([resize(size)]);
+      expect(board.size).toBe(DEFAULT_BOARD_SIZE);
+      expect(results[0].effective).toBe(false);
+    }
+  });
+
+  it("石がない盤面で今と同じサイズを選ぶと何もしない。石があれば取り除く", () => {
+    expect(replay([resize(DEFAULT_BOARD_SIZE)]).results[0].effective).toBe(false);
+    const { board, results } = replay([place(1, 1), resize(DEFAULT_BOARD_SIZE)]);
+    expect(results[1].effective).toBe(true);
+    expect(board.stones.size).toBe(0);
+  });
+});

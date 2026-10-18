@@ -27,3 +27,4 @@
 | [D-0006](D-0006-project-layout.md) | リポジトリの構成と開発の道具 | 2026-10-18 |
 | [D-0007](D-0007-participants-display-and-room-cleanup.md) | 参加者の色、表示の切り替え、部屋を消すまでの待ち時間 | 2026-10-18 |
 | [D-0008](D-0008-room-implementation.md) | 部屋と参加の作り方 | 2026-10-18 |
+| [D-0009](D-0009-selectable-board-sizes.md) | 選べる盤面のサイズ | 2026-10-19 |
