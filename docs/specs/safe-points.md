@@ -1,6 +1,6 @@
 # 石を置ける場所の表示
 
-- 状態: 合意
+- 状態: 実装済み
 - Issue: #6（仕様）、#19（実装）
 - 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)
 
