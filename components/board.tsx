@@ -5,6 +5,7 @@ import { type PointerEvent, useMemo } from "react";
 import { OtherCursors } from "@/components/cursors";
 import type { Point } from "@/components/history";
 import type { Game } from "@/components/use-game";
+import { circleOf, clipLine, findKyouen } from "@/lib/kyouen";
 import { parsePointKey, pointKey } from "@/lib/operations";
 
 // 盤面のまわりの余白（格子の間隔を1とする）
@@ -12,11 +13,20 @@ const MARGIN = 0.7;
 const VIEW_OF_DEFAULT_BOARD = 8 + MARGIN * 2;
 const STONE_RADIUS = 0.38;
 
-export function Board({ game, highlight }: { game: Game; highlight: Point | null }) {
+export function Board({
+  game,
+  highlight,
+  showKyouen,
+}: {
+  game: Game;
+  highlight: Point | null;
+  showKyouen: boolean;
+}) {
   const { board, record } = game;
   const { size, stones } = board;
   const last = size - 1;
   const updateMyPresence = useUpdateMyPresence();
+  const kyouen = useMemo(() => (showKyouen ? findKyouen(stones) : []), [showKyouen, stones]);
   const points = useMemo(
     () => Array.from({ length: size * size }, (_, i) => ({ x: i % size, y: Math.floor(i / size) })),
     [size],
@@ -46,6 +56,16 @@ export function Board({ game, highlight }: { game: Game; highlight: Point | null
             <line x1={i} x2={i} y1={0} y2={last} />
           </g>
         ))}
+      </g>
+      <g className="fill-none stroke-red-500/70" strokeWidth={0.06}>
+        {kyouen.map(({ curve }) => {
+          const key = `${curve.a},${curve.b},${curve.c},${curve.d}`;
+          const circle = circleOf(curve);
+          if (circle) return <circle key={key} cx={circle.cx} cy={circle.cy} r={circle.r} />;
+          const ends = clipLine(curve, -MARGIN, last + MARGIN);
+          if (!ends) return null;
+          return <line key={key} x1={ends[0].x} x2={ends[1].x} y1={ends[0].y} y2={ends[1].y} />;
+        })}
       </g>
       {[...stones].map((key) => {
         const { x, y } = parsePointKey(key);
