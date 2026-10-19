@@ -32,3 +32,4 @@
 | [board-size.md](board-size.md) 盤面のサイズの切り替え | 実装済み | #17 |
 | [kyouen-display.md](kyouen-display.md) 完成した円の表示 | 合意 | #18 |
 | [safe-points.md](safe-points.md) 石を置ける場所の表示 | 合意 | #19 |
+| [board-image.md](board-image.md) 盤面の画像の保存 | 実装済み | #49 |
