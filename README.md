@@ -2,6 +2,11 @@
 
 開発の進め方とドキュメントは [docs/README.md](docs/README.md) を参照。
 
+## 参考
+
+- 参考アプリ: https://yambi.jp/kyouen/ （作者: 河瀬康志さん）
+- 参考サイト: http://nadamath2012.web.fc2.com/program/kyouen1.html
+
 ## 開発
 
 `.env.example` を `.env.local` に写し、値を入れる。
