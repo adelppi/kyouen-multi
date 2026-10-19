@@ -1,3 +1,46 @@
+# 共円マルチ
+
+このファイルは、このリポジトリで作業する AI（Claude Code、Codex など）への指示をまとめる。Claude Code は `CLAUDE.md` からこのファイルを読み込む。
+
+## 開発の進め方
+
+作業は `docs/workflow.md` の決まりに従う。作業を始める前に `docs/README.md` の「読む順番」のとおりに読む。要点は次のとおり。
+
+- 作業は Issue から始め、1つの Issue に1つの PR を対応させる。
+- 1つの PR の中で、ドキュメントを先に書き、そのあとでソースコードを書く。
+- `docs/specs/` の仕様とソースコードを食い違わせない。振る舞いを変えるときは、同じ PR で仕様も書き換える。
+- 決められないことは推測で決めず、`docs/open-questions.md` に書いて尋ねる。
+- 決めたことは `docs/decisions/` に追記する。既存の記録は消さず、本文も書き換えない。
+- `docs/vision.md` の「やらないこと」に当たる機能は作らない。
+
+## コードを書くとき
+
+- Next.js のコードを書く前に、このファイルの最後にある Next.js の節を読む。手元の Next.js は学習した版と違うことがあるので、`node_modules/next/dist/docs/` の説明で確かめる。
+- コマンドは pnpm で実行する。`pnpm lint` と `pnpm test` が通ってから PR を出す。
+
+## 日本語の文体（yomiyasu）
+
+このリポジトリで AI が書く日本語は、すべて yomiyasu スキルの規則に従う。スキルの本体は `.claude/skills/yomiyasu/` にあり、Codex は `.agents/skills/yomiyasu`（本体へのシンボリックリンク）から読む。対象は次のとおり。
+
+- 会話の返答（作業報告、説明、質問）
+- リポジトリに書くファイルの日本語（README、ドキュメント、コードのコメント、UI の文言）
+- コミットメッセージ、PR の説明、Issue やレビューのコメント
+
+守り方は次のとおり。
+
+- 日本語を書く作業を始める前に、まだこのセッションで読んでいなければ yomiyasu スキルの `SKILL.md` を読み込む。
+- 新しく書くときも、最初からスキルの規則で書く。特に「意味の保持」と「情報の不増補」を優先し、元の資料や会話にない事実、効果、感想を足さない。
+- ファイルに書いた日本語の文書（`.md` など）は、書き終えたら付属の検査を1回かけ、出た候補を文脈と照らして直すか残すかを決める。
+
+  ```bash
+  python3 -B .claude/skills/yomiyasu/scripts/yomiyasu_lint.py <ファイル>
+  ```
+
+- 会話の返答では、スキルの完了報告の欄（「変えたところ」「確認の記録」など）は付けない。これらはユーザーが推敲を頼んだときだけ付ける。
+- コード、識別子、コマンド、ログ、引用した原文は書き換えない。
+
+`.claude/skills/yomiyasu/` は https://github.com/nanaism/yomiyasu の `skills/yomiyasu/`（v2.0.1、コミット 84e1f5b）を写したもの。更新するときは同じフォルダを写し直す。
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
