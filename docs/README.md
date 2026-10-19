@@ -28,4 +28,4 @@
 
 ## 文体
 
-日本語は `CLAUDE.md` にあるとおり、yomiyasu の規則で書く。
+日本語は `AGENTS.md` にあるとおり、yomiyasu の規則で書く。
