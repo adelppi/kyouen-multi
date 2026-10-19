@@ -33,3 +33,4 @@
 | [D-0012](D-0012-kyouen-placeholder.md) | 円の判定と置ける場所の計算をプレースホルダーにする | 2026-10-19 |
 | [D-0013](D-0013-codex-support.md) | Codex でも開発できるようにする | 2026-10-19 |
 | [D-0015](D-0015-deploy-from-actions.md) | Vercel へのデプロイを GitHub Actions から行う | 2026-10-19 |
+| [D-0016](D-0016-shared-display-toggles.md) | 表示の切り替えを部屋の全員で共通にする | 2026-10-19 |

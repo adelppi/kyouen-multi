@@ -138,7 +138,7 @@
 - 起票: 2026-10-18、Issue #6
 - 影響: `specs/kyouen-display.md`、`specs/safe-points.md`
 - 選択肢: 参加者ごと（推奨）／部屋の全員で共通
-- 決定: [D-0007](decisions/D-0007-participants-display-and-room-cleanup.md)
+- 決定: [D-0007](decisions/D-0007-participants-display-and-room-cleanup.md)。のちに [D-0016](decisions/D-0016-shared-display-toggles.md) で部屋の全員で共通に変えた
 
 ### OQ-014
 

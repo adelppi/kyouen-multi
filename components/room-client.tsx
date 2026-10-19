@@ -1,6 +1,6 @@
 "use client";
 
-import { LiveList } from "@liveblocks/client";
+import { LiveList, LiveObject } from "@liveblocks/client";
 import { ClientSideSuspense, LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 import { useState } from "react";
 import { JoinForm } from "@/components/join-form";
@@ -27,7 +27,10 @@ export function RoomClient({ roomId }: { roomId: string }) {
       <RoomProvider
         id={roomId}
         initialPresence={{ name, cursor: null }}
-        initialStorage={() => ({ operations: new LiveList([]) })}
+        initialStorage={() => ({
+          operations: new LiveList([]),
+          display: new LiveObject({ showKyouen: false, showSafePoints: false }),
+        })}
       >
         <ClientSideSuspense fallback={<Centered>接続しています…</Centered>}>
           <RoomView />
