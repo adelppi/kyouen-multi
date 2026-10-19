@@ -17,6 +17,7 @@
 
 - Next.js のコードを書く前に、このファイルの最後にある Next.js の節を読む。手元の Next.js は学習した版と違うことがあるので、`node_modules/next/dist/docs/` の説明で確かめる。
 - コマンドは pnpm で実行する。`pnpm lint` と `pnpm test` が通ってから PR を出す。
+- `pnpm` の版が `package.json` の `packageManager` と違う場合は、`corepack pnpm` で指定された版を使う。依存関係は `corepack pnpm install --frozen-lockfile` で導入できる。
 
 ## 日本語の文体（yomiyasu）
 
