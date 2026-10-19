@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { Board } from "@/components/board";
 import { History, type Point } from "@/components/history";
 import { type Game, useGame } from "@/components/use-game";
+import { boardImageSvg, IMAGE_SIZE } from "@/lib/board-image";
 import { colorForConnection } from "@/lib/colors";
+import { findKyouen } from "@/lib/kyouen";
 import { MAX_BOARD_SIZE, MIN_BOARD_SIZE } from "@/lib/operations";
 
 export function RoomView() {
@@ -32,6 +34,7 @@ export function RoomView() {
         <BoardSizeSelect game={game} />
         <Toggle checked={showKyouen} label="完成した円を表示" onChange={(checked) => setDisplay("showKyouen", checked)} />
         <Toggle checked={showSafePoints} label="石を置ける場所を表示" onChange={(checked) => setDisplay("showSafePoints", checked)} />
+        <SaveImageButton game={game} showKyouen={showKyouen} />
         <ParticipantList />
         <History game={game} onHighlight={setHighlight} />
       </aside>
@@ -145,6 +148,42 @@ function CopyLinkButton() {
       type="button"
     >
       {copied ? "コピーしました" : "部屋の URL をコピー"}
+    </button>
+  );
+}
+
+// 盤面を PNG の画像にしてダウンロードする（board-image.md）
+function SaveImageButton({ game, showKyouen }: { game: Game; showKyouen: boolean }) {
+  const { board } = game;
+
+  async function save() {
+    const svg = boardImageSvg(board, showKyouen ? findKyouen(board.stones) : []);
+    const svgUrl = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    try {
+      const image = new Image();
+      image.src = svgUrl;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = IMAGE_SIZE;
+      canvas.height = IMAGE_SIZE;
+      canvas.getContext("2d")?.drawImage(image, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+      const png = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!png) return;
+      const pngUrl = URL.createObjectURL(png);
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = "kyouen.png";
+      link.click();
+      // ダウンロードが始まる前に URL を消さないよう、少し待つ
+      setTimeout(() => URL.revokeObjectURL(pngUrl), 1000);
+    } finally {
+      URL.revokeObjectURL(svgUrl);
+    }
+  }
+
+  return (
+    <button className={buttonClass} onClick={save} type="button">
+      盤面を画像で保存
     </button>
   );
 }

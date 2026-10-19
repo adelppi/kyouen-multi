@@ -5,13 +5,11 @@ import { type PointerEvent, useMemo } from "react";
 import { OtherCursors } from "@/components/cursors";
 import type { Point } from "@/components/history";
 import type { Game } from "@/components/use-game";
+import { BOARD_CORNER_RADIUS, GRID_STROKE_WIDTH, KYOUEN_STROKE_WIDTH, MARGIN, STONE_RADIUS } from "@/lib/board-image";
 import { circleOf, clipLine, createKyouenAnalyzer } from "@/lib/kyouen";
 import { parsePointKey, pointKey } from "@/lib/operations";
 
-// 盤面のまわりの余白（格子の間隔を1とする）
-const MARGIN = 0.7;
 const VIEW_OF_DEFAULT_BOARD = 8 + MARGIN * 2;
-const STONE_RADIUS = 0.38;
 
 export function Board({
   game,
@@ -48,12 +46,12 @@ export function Board({
       <rect
         className="fill-amber-50 dark:fill-zinc-900"
         height={last + MARGIN * 2}
-        rx={0.2}
+        rx={BOARD_CORNER_RADIUS}
         width={last + MARGIN * 2}
         x={-MARGIN}
         y={-MARGIN}
       />
-      <g className="stroke-zinc-400 dark:stroke-zinc-600" strokeWidth={0.03}>
+      <g className="stroke-zinc-400 dark:stroke-zinc-600" strokeWidth={GRID_STROKE_WIDTH}>
         {Array.from({ length: size }, (_, i) => (
           <g key={i}>
             <line x1={0} x2={last} y1={i} y2={i} />
@@ -61,7 +59,7 @@ export function Board({
           </g>
         ))}
       </g>
-      <g className="fill-none stroke-red-600 dark:stroke-red-400" strokeWidth={0.06}>
+      <g className="fill-none stroke-red-600 dark:stroke-red-400" strokeWidth={KYOUEN_STROKE_WIDTH}>
         {kyouen.map(({ curve }) => {
           const key = `${curve.a},${curve.b},${curve.c},${curve.d}`;
           const circle = circleOf(curve);
