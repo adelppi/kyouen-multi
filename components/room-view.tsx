@@ -1,12 +1,13 @@
 "use client";
 
 import { useMutation, useOthers, useSelf, useStorage } from "@liveblocks/react/suspense";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Board } from "@/components/board";
 import { History, type Point } from "@/components/history";
 import { type Game, useGame } from "@/components/use-game";
 import { colorForConnection } from "@/lib/colors";
 import { MAX_BOARD_SIZE, MIN_BOARD_SIZE } from "@/lib/operations";
+import { moveItem, orderParticipants } from "@/lib/participant-order";
 
 export function RoomView() {
   const game = useGame();
@@ -44,16 +45,64 @@ function ParticipantList() {
   const others = useOthers((users) =>
     users.map((user) => ({ connectionId: user.connectionId, name: user.presence.name })),
   );
-  const participants = [{ ...self, isSelf: true }, ...others.map((o) => ({ ...o, isSelf: false }))].sort(
-    (a, b) => a.connectionId - b.connectionId,
+  // 並び順は部屋の全員で共通（D-0017）
+  const order = useStorage((root) => root.participantOrder);
+  const setOrder = useMutation(({ storage }, ids: number[]) => storage.set("participantOrder", ids), []);
+  const participants = orderParticipants(
+    [{ ...self, isSelf: true }, ...others.map((o) => ({ ...o, isSelf: false }))],
+    order,
   );
+
+  const listRef = useRef<HTMLUListElement>(null);
+  const [drag, setDrag] = useState<{ connectionId: number; to: number } | null>(null);
+  // ドラッグしている参加者が抜けたら、ドラッグをやめる
+  const from = drag ? participants.findIndex((p) => p.connectionId === drag.connectionId) : -1;
+  const dragging = drag && from !== -1 ? { ...drag, from, to: Math.min(drag.to, participants.length - 1) } : null;
+  const shown = dragging ? moveItem(participants, dragging.from, dragging.to) : participants;
+
+  // ポインタの高さから、ドラッグしている参加者を入れる位置を決める。数えるのはドラッグしている行より上にある行
+  function indexAt(clientY: number, draggedIndex: number): number {
+    return Array.from(listRef.current?.children ?? []).filter((row, i) => {
+      if (i === draggedIndex) return false;
+      const rect = row.getBoundingClientRect();
+      return rect.top + rect.height / 2 < clientY;
+    }).length;
+  }
 
   return (
     <section className="flex flex-col gap-2">
       <h2 className="text-xs font-medium text-zinc-500">参加者 {participants.length}人</h2>
-      <ul className="flex flex-col gap-1.5">
-        {participants.map((p) => (
-          <li key={p.connectionId} className="flex items-center gap-2 text-sm">
+      {/* 行は並び替えで DOM の中を動くので、ポインタは動かない ul で捕まえる */}
+      <ul
+        className="flex flex-col gap-0.5"
+        onLostPointerCapture={() => setDrag(null)}
+        onPointerMove={(event) => {
+          if (!dragging) return;
+          const to = indexAt(event.clientY, dragging.to);
+          if (to !== dragging.to) setDrag({ connectionId: dragging.connectionId, to });
+        }}
+        onPointerUp={() => {
+          if (dragging && dragging.to !== dragging.from) setOrder(shown.map((q) => q.connectionId));
+          setDrag(null);
+        }}
+        ref={listRef}
+      >
+        {shown.map((p) => (
+          <li
+            key={p.connectionId}
+            className={`-mx-1.5 flex cursor-grab items-center gap-2 rounded-md px-1.5 py-0.5 text-sm select-none ${
+              dragging?.connectionId === p.connectionId ? "cursor-grabbing bg-zinc-100 dark:bg-zinc-800" : ""
+            }`}
+            onPointerDown={(event) => {
+              if (event.button !== 0) return;
+              listRef.current?.setPointerCapture(event.pointerId);
+              setDrag({ connectionId: p.connectionId, to: participants.indexOf(p) });
+            }}
+          >
+            {/* タッチでは、このつまみからドラッグする。行のほかの場所は画面のスクロールに使う */}
+            <span aria-hidden className="-my-1 touch-none px-0.5 py-1 text-zinc-400">
+              ⠿
+            </span>
             <span
               aria-hidden
               className="size-2.5 shrink-0 rounded-full"

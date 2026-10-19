@@ -12,6 +12,8 @@ declare global {
       operations: LiveList<Operation>;
       // 表示の切り替え。部屋の全員で共通で、操作の記録には入れない（D-0016）
       display: LiveObject<{ showKyouen: boolean; showSafePoints: boolean }>;
+      // 参加者の一覧の並び順。connection ID の並びで、部屋の全員で共通（D-0017）
+      participantOrder: number[];
     };
   }
 }
