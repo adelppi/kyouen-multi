@@ -9,3 +9,5 @@
 - 最終確認: 全63件のテスト、lint、型チェック、ビルド、差分検査が成功した。別のエージェントによる読み取りレビューでも問題は見つからなかった。
 - 提出先: [ドラフトPR #42](https://github.com/adelppi/kyouen-multi/pull/42)。Issue #41 に対応し、レビュー待ち。
 - GitHubへのIssue作成とドラフトPR作成は、ユーザーが許可済み。
+- プレビュー確認（2026-10-19、公開前）: 最新のmainを取り込み、`bcdcc42` をpushした。取り込み後もlintと全63件のテストが成功した。GitHub Actionsのビルドとアップロードは成功したが、プレビューは「Deployment is blocked」となった。Vercelの詳細画面はこちらのアカウントでは「Not Found」となり、理由は確認できなかった。処理待ちが続くActionsには停止を要求した。
+- 公開後の確認（2026-10-19）: リポジトリがPUBLICとなり、`bcdcc42` のdeployチェックが成功した。[成功したプレビュー](https://kyouen-multi-alo6rzs56-adelppis-projects.vercel.app/) をChromeで開き、Liveblocks接続、3点からの安全な場所の表示、4点での円の表示、undo、redoを確認した。コンソールの警告・エラーはなかった。最新mainとの差分はREADMEの参考欄だけで、仕様・実装・デプロイ設定の変更はない。
