@@ -1,8 +1,8 @@
 # 部屋と参加
 
 - 状態: 実装済み
-- Issue: #6（仕様）、#11（実装）
-- 関係する決定: [D-0003](../decisions/D-0003-room-and-participants.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0008](../decisions/D-0008-room-implementation.md)
+- Issue: #6（仕様）、#11（実装）、#50（並び替え）
+- 関係する決定: [D-0003](../decisions/D-0003-room-and-participants.md)、[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0008](../decisions/D-0008-room-implementation.md)、[D-0017](../decisions/D-0017-shared-participant-order.md)
 
 ## 目的
 
@@ -15,10 +15,11 @@
 3. 部屋に入るとき、名前を入れる。同じブラウザで次に入るときは、前に入れた名前を初めから入れておく。
 4. 参加者の色は、部屋に入った順に、決めた色の並びから割り当てる。同じ名前の参加者がいてもよく、色で見分ける。
 5. 部屋にいる参加者の名前と色を、画面に一覧で表示する。参加者が入ったり出たりしたら、一覧をすぐに更新する。
-6. 部屋の URL をコピーする操作を画面に置く。
-7. 部屋の参加者が全員抜けたら、5分待ってから部屋と操作の記録を消す。5分のうちに誰かが入れば消さない。消したあとで同じ URL を開いた人は、新しい部屋に入る（[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)）。
+6. 参加者の一覧は、ドラッグで並び替えられる。並び順は部屋の全員で共通で、一人が並び替えると、ほかの参加者の一覧も同じ順になる。並び替えのあとで部屋に入った参加者と、入り直した参加者は、一覧の末尾に付く。並び替えは操作の記録と履歴に入れず、undo と redo の対象にしない。並び順で参加者の色は変わらない（[D-0017](../decisions/D-0017-shared-participant-order.md)）。
+7. 部屋の URL をコピーする操作を画面に置く。
+8. 部屋の参加者が全員抜けたら、5分待ってから部屋と操作の記録を消す。5分のうちに誰かが入れば消さない。消したあとで同じ URL を開いた人は、新しい部屋に入る（[D-0005](../decisions/D-0005-room-lifetime-and-board-size.md)、[D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)）。
 
-8. 部屋を消すのは、次に誰かが部屋に入るときか、毎日1回の定期処理のときにする。参加者から見た振る舞いは 7 のとおりになる（[D-0008](../decisions/D-0008-room-implementation.md)）。
+9. 部屋を消すのは、次に誰かが部屋に入るときか、毎日1回の定期処理のときにする。参加者から見た振る舞いは 8 のとおりになる（[D-0008](../decisions/D-0008-room-implementation.md)）。
 
 ## 受け入れ条件
 
@@ -28,6 +29,10 @@
 - [ ] 参加者の一覧に、部屋にいる全員の名前が出る
 - [ ] 参加者が出ると、一覧から消える
 - [ ] 同じ名前の参加者が2人いても、色で見分けられる
+- [ ] 参加者の一覧をドラッグすると、並び順が変わる
+- [ ] 一人が並び替えると、ほかの参加者の一覧も同じ順になる
+- [ ] 並び替えのあとで部屋に入った参加者は、一覧の末尾に付く
+- [ ] 並び替えても、履歴に行が増えず、undo で並び順が戻らない
 - [ ] 全員が抜けてから5分のうちに同じ URL を開くと、元の盤面のまま入れる
 - [ ] 全員が抜けてから5分を過ぎて同じ URL を開くと、石のない新しい部屋に入る
 

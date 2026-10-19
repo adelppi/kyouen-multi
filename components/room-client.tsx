@@ -30,6 +30,7 @@ export function RoomClient({ roomId }: { roomId: string }) {
         initialStorage={() => ({
           operations: new LiveList([]),
           display: new LiveObject({ showKyouen: false, showSafePoints: false }),
+          participantOrder: [],
         })}
       >
         <ClientSideSuspense fallback={<Centered>接続しています…</Centered>}>

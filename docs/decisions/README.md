@@ -35,3 +35,4 @@
 | [D-0015](D-0015-deploy-from-actions.md) | Vercel へのデプロイを GitHub Actions から行う | 2026-10-19 |
 | [D-0017](D-0017-board-image.md) | 盤面を画像として保存する | 2026-10-19 |
 | [D-0016](D-0016-shared-display-toggles.md) | 表示の切り替えを部屋の全員で共通にする | 2026-10-19 |
+| [D-0017](D-0017-shared-participant-order.md) | 参加者の一覧をドラッグで並び替え、部屋で共有する | 2026-10-20 |
