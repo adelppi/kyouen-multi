@@ -1,6 +1,6 @@
 "use client";
 
-import { useOthers, useSelf } from "@liveblocks/react/suspense";
+import { useMutation, useOthers, useSelf, useStorage } from "@liveblocks/react/suspense";
 import { useEffect, useState } from "react";
 import { Board } from "@/components/board";
 import { History, type Point } from "@/components/history";
@@ -11,9 +11,12 @@ import { MAX_BOARD_SIZE, MIN_BOARD_SIZE } from "@/lib/operations";
 export function RoomView() {
   const game = useGame();
   const [highlight, setHighlight] = useState<Point | null>(null);
-  // 表示の切り替えは参加者ごと（D-0007）
-  const [showKyouen, setShowKyouen] = useState(false);
-  const [showSafePoints, setShowSafePoints] = useState(false);
+  // 表示の切り替えは部屋の全員で共通（D-0016）
+  const { showKyouen, showSafePoints } = useStorage((root) => root.display);
+  const setDisplay = useMutation(
+    ({ storage }, key: "showKyouen" | "showSafePoints", value: boolean) => storage.get("display").set(key, value),
+    [],
+  );
 
   return (
     <div className="flex flex-1 flex-col md:flex-row">
@@ -27,8 +30,8 @@ export function RoomView() {
           リセット
         </button>
         <BoardSizeSelect game={game} />
-        <Toggle checked={showKyouen} label="完成した円を表示" onChange={setShowKyouen} />
-        <Toggle checked={showSafePoints} label="石を置ける場所を表示" onChange={setShowSafePoints} />
+        <Toggle checked={showKyouen} label="完成した円を表示" onChange={(checked) => setDisplay("showKyouen", checked)} />
+        <Toggle checked={showSafePoints} label="石を置ける場所を表示" onChange={(checked) => setDisplay("showSafePoints", checked)} />
         <ParticipantList />
         <History game={game} onHighlight={setHighlight} />
       </aside>
