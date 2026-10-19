@@ -32,3 +32,4 @@
 | [D-0011](D-0011-no-cursor-trail.md) | カーソルの軌跡を表示しない | 2026-10-19 |
 | [D-0012](D-0012-kyouen-placeholder.md) | 円の判定と置ける場所の計算をプレースホルダーにする | 2026-10-19 |
 | [D-0013](D-0013-codex-support.md) | Codex でも開発できるようにする | 2026-10-19 |
+| [D-0015](D-0015-deploy-from-actions.md) | Vercel へのデプロイを GitHub Actions から行う | 2026-10-19 |
