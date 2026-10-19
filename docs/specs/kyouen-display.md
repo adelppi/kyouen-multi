@@ -2,7 +2,7 @@
 
 - 状態: 実装済み
 - Issue: #6（仕様）、#18（実装）、#37（プレースホルダーにした）、#41（判定の実装）
-- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0012](../decisions/D-0012-kyouen-placeholder.md)
+- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0012](../decisions/D-0012-kyouen-placeholder.md)、[D-0014](../decisions/D-0014-kyouen-algorithms.md)
 
 ## 目的
 
