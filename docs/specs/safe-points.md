@@ -1,8 +1,8 @@
 # 石を置ける場所の表示
 
 - 状態: 実装済み
-- Issue: #6（仕様）、#19（実装）、#37（プレースホルダーにした）、#41（計算の実装）
-- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)、[D-0012](../decisions/D-0012-kyouen-placeholder.md)、[D-0014](../decisions/D-0014-kyouen-algorithms.md)
+- Issue: #6（仕様）、#19（実装）、#37（プレースホルダーにした）、#41（計算の実装）、#47（全員で共通にした）
+- 関係する決定: [D-0007](../decisions/D-0007-participants-display-and-room-cleanup.md)、[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)、[D-0012](../decisions/D-0012-kyouen-placeholder.md)、[D-0014](../decisions/D-0014-kyouen-algorithms.md)、[D-0016](../decisions/D-0016-shared-display-toggles.md)
 
 ## 目的
 
@@ -10,7 +10,8 @@
 
 ## 振る舞い
 
-1. 石を置ける場所の表示と非表示を切り替える操作を画面に置く。切り替えは参加者ごとで、ほかの参加者の表示は変わらない。
+1. 石を置ける場所の表示と非表示を切り替える操作を画面に置く。切り替えは部屋の全員で共通で、一人が切り替えると、ほかの参加者の表示も同じになる（[D-0016](../decisions/D-0016-shared-display-toggles.md)）。
+   切り替えの状態は Liveblocks の Storage に、操作の記録とは別に置く。操作の記録と履歴には入れず、undo と redo の対象にしない。部屋を作ったときは非表示にする。
 2. 石を置ける場所は、石のない格子点のうち、そこに石を置いても新しく共円ができない格子点とする。
    すでにできている共円の上の格子点も、置けない場所とする。つまり、3つ以上の石を通る円か直線の上にある格子点は、どれも置ける場所にしない（[D-0010](../decisions/D-0010-safe-points-on-existing-kyouen.md)）。
 3. 表示にしているときは、石を置ける場所に印を描く。
@@ -25,7 +26,9 @@
 - [x] 置くと共円ができる格子点には印が出ない
 - [x] すでにできている共円の上の格子点には印が出ない
 - [x] 非表示にすると、印が消える
-- [x] 一人が切り替えても、ほかの参加者の表示は変わらない
+- [ ] 一人が切り替えると、ほかの参加者の表示も切り替わる
+- [ ] あとから部屋に入った参加者にも、同じ表示が出る
+- [ ] 切り替えが履歴に出ず、undo と redo で戻らない
 - [x] 計算を単体テストで確かめる
 
 ## 範囲外

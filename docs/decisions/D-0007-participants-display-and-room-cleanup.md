@@ -37,3 +37,5 @@
 ## 影響
 
 - `room.md`、`board.md`、`history.md`、`cursors.md`、`reset.md`、`kyouen-display.md`、`safe-points.md`、`operation-log.md` に反映した。
+
+OQ-013 の決定は D-0016 で置き換えた。
