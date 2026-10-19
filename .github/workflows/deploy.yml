@@ -1,0 +1,35 @@
+# Vercel へのデプロイ。理由は docs/decisions/D-0015-deploy-from-actions.md にある
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  # main への push は本番に、PR はプレビューにデプロイする
+  VERCEL_TARGET: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+
+jobs:
+  deploy:
+    # fork からの PR には Secrets が渡らないので、デプロイしない
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: npm install --global vercel@63.1.2
+      - run: vercel pull --yes --environment="$VERCEL_TARGET" --token="${{ secrets.VERCEL_TOKEN }}"
+      - run: vercel build --target="$VERCEL_TARGET" --token="${{ secrets.VERCEL_TOKEN }}"
+      - run: |
+          url=$(vercel deploy --prebuilt --target="$VERCEL_TARGET" --token="${{ secrets.VERCEL_TOKEN }}")
+          echo "デプロイした URL: $url" >> "$GITHUB_STEP_SUMMARY"
